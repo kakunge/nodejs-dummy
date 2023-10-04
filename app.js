@@ -22,11 +22,11 @@ connection.connect((err) => {
         return;
     }
 
-    console.log("MySQL connection success" + connection.threadId);
+    console.log("MySQL connection success " + connection.threadId);
 })
 
 app.get('/', (req, res) => {
-    res.send("Hi, this is a dummy web!</br><a href='/cmdi'>Go to command page</a>");
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get('/cmdi', (req, res) => {
@@ -52,6 +52,26 @@ app.post('/cmdi', (req, res) => {
 
         res.send("Result : " + stdout);
         console.log(stdout);
+    })
+})
+
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + "/public/login.html");
+})
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+
+    connection.query(query, (err, results) => {
+        if (err) throw err;
+
+        if (results.length > 0) {
+            res.send("Login success");
+        }
+        else {
+            res.send("Login fail");
+        }
     })
 })
 
