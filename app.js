@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const cors = require('cors');
 const { exec } = require('child_process');
 const app = express();
-const port = 80;
+const port = 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -76,5 +76,5 @@ app.post('/login', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log("Server is listening on port 80");
+    console.log("Server is listening on port 3000");
 })
