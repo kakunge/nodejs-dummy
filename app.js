@@ -23,7 +23,7 @@ connection.connect((err) => {
     }
 
     console.log("MySQL connection success " + connection.threadId);
-})
+});
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 
 app.get('/cmdi', (req, res) => {
     res.sendFile(__dirname + "/public/cmdi.html");
-})
+});
 
 app.post('/cmdi', (req, res) => {
     const command = req.body.command;
@@ -53,28 +53,32 @@ app.post('/cmdi', (req, res) => {
         res.send("Result : " + stdout);
         console.log(stdout);
     })
-})
+});
 
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + "/public/login.html");
-})
+});
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
 
-    connection.query(query, (err, results) => {
-        if (err) throw err;
+    try {
+        connection.query(query, (err, results) => {
+            if (err) throw err;
 
-        if (results.length > 0) {
-            res.send("Login success");
-        }
-        else {
-            res.send("Login fail");
-        }
-    })
-})
+            if (results.length > 0) {
+                res.send("Login success");
+            } else {
+                res.send("Login fail");
+            }
+        });
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 app.listen(port, () => {
     console.log("Server is listening on port 3000");
-})
+});
