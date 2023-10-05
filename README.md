@@ -1,11 +1,16 @@
 # nodejs dummy
 ## Usage
+### Install node modules
 
 ```bash
 npm install
 ```
 
+### MySQL setup
+
 ```MySQL
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
+
 CREATE DATABASE dummy;
 use dummy;
 
