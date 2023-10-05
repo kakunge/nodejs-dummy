@@ -9,6 +9,7 @@ npm install
 ### MySQL setup
 
 ```MySQL
+use mysql;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
 
 CREATE DATABASE dummy;
