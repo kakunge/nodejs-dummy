@@ -61,22 +61,21 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}';`;
 
-    try {
-        connection.query(query, (err, results) => {
-            if (err) throw err;
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
 
-            if (results.length > 0) {
-                res.send("Login success");
-            } else {
-                res.send("Login fail");
-            }
-        });
-    } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).send("Internal Server Error");
-    }
+        if (results.length > 0) {
+            res.send("Login success");
+        } else {
+            res.send("Login fail");
+        }
+    });
 });
 
 app.listen(port, () => {
